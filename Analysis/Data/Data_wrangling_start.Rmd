@@ -1,0 +1,38 @@
+---
+title: "Data_wrangling"
+author: "Dom"
+date: "14/12/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Getting started
+We need to load the R packages that we want to use
+```{r packageload, message =FALSE}
+library(here)
+library(tidyverse)
+library(skimr)
+```
+
+## Load data 
+```{r}
+loc <- here("Analysis","Data", "frames_ex2.csv")
+frames <- read_csv(file = loc)
+
+```{r printframes}
+frames
+```
+
+An alternative way to view the a tibble that sometimes
+looks nicer is to use the `glimpse()` function:
+
+```{r glimpseframes}
+glimpse(frames)
+```
+
+```{r skimframes (this is just a title)}
+skim(frames)
+```
+

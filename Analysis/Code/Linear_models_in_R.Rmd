@@ -1,0 +1,18 @@
+---
+title: "Linear models in R"
+author: "Dom"
+date: "21/12/2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, packageload, error=TRUE, message=FALSE}
+library(tidyverse)
+library(here)
+library(lme4)
+frames <- here("analysis", "data", "frames_ex2.csv") %>% read_csv()
+frames
+```
