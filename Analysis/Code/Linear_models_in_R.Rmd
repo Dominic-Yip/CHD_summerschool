@@ -9,6 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+Load the packages and the data 
 ```{r, packageload, error=TRUE, message=FALSE}
 library(tidyverse)
 library(here)
@@ -16,3 +17,59 @@ library(lme4)
 frames <- here("analysis", "data", "frames_ex2.csv") %>% read_csv()
 frames
 ```
+
+Simplify the data (group by and summarize)
+```{r simplifydata, error = TRUE, message=FALSE}
+tiny_frames <- frames %>% 
+  group_by(id, age, condition) %>% 
+  summarize( 
+    response = mean(response)) %>% 
+  ungroup()
+
+# glimpse the data 
+glimpse(tiny_frames)
+```
+
+Calculate descriptive statistics (mean and sd)
+```{r descript, error=TRUE, message = FALSE}
+tiny_frames %>% 
+  group_by(condition) %>% 
+  summarize(
+  mean_resp = mean(response),
+  sd_resp = sd(response), 
+  n = n()
+  )
+```
+
+Draw scatterplot of the data 
+```{r drawscatter, error=TRUE, message=FALSE}
+tiny_frames %>% 
+  ggplot(mapping = aes(x = age, y = response, color = condition)) + 
+  geom_smooth(method = "lm") + geom_point()
+```
+
+Data analysis 
+```{r dataanalysis, error = TRUE, message =FALSE}
+mod1 <- lm(formula = response ~ 1, data = tiny_frames) 
+mod2 <- lm(formula = response ~ condition, data = tiny_frames)
+anova(mod1,mod2)
+```
+
+Data analysis with both categorical and continous variables 
+```{r datanalysis_2, error = TRUE, message =FALSE}
+mod1 <- lm(formula = response ~ 1, data = tiny_frames) 
+mod2 <- lm(formula = response ~ condition, data = tiny_frames)
+mod3 <- lm(formula = response ~ condition + age, data = tiny_frames)
+```
+  
+Model selection with AIC and BIC 
+```{r model selection, error=TRUE, message = FALSE}
+AIC_model <- AIC(mod1,mod2,mod3)
+BIC_model <- BIC(mod1,mod2,mod3)
+summary(mod2)
+```
+Other functions that are useful: predict(), residuals(), plot() - last one is regression diagnostics 
+  
+  
+  
+  
